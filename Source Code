@@ -1,0 +1,41 @@
+package com.pluginhider.coding;
+
+
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class Main extends JavaPlugin implements Listener{
+	
+	public void onEnable(){
+		getLogger().info("PluginHider Has Been Enabled!");
+		getServer().getPluginManager().registerEvents(this, this);
+		getConfig().options().copyDefaults(true);
+		saveConfig();
+	}
+	public void onDisable(){
+		getLogger().info("PluginHider Has Been Disabled!");
+	}
+	
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+		Player player = (Player) sender;
+		commandLabel = commandLabel.replaceAll("(&([a-f0-9]))", "\u00A7$2");
+		if(commandLabel.equalsIgnoreCase("pl") && !player.isOp()){
+			player.sendMessage(getConfig().getString("pl"));
+		}else if(commandLabel.equalsIgnoreCase("pl") && player.isOp()){
+			player.sendMessage(ChatColor.GREEN + "Just type /plugins to see REAL plugin list! :)");
+		}
+		if(commandLabel.equalsIgnoreCase("credit")){
+			if(args.length == 0){
+				player.sendMessage(ChatColor.AQUA + "----------------------------------------");
+				player.sendMessage(ChatColor.AQUA + "| " + ChatColor.GREEN + "http://www.youtube.com/HowToMinecraftPlugin " + ChatColor.AQUA + "|");
+				player.sendMessage(ChatColor.AQUA + "----------------------------------------");
+			}
+		}
+		return false;
+	}
+
+}
